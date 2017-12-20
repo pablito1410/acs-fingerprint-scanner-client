@@ -40,7 +40,11 @@
         <dependency>
             <groupId>com.pablo</groupId>
             <artifactId>gt511c1r</artifactId>
-            <version>0.1.0</version>
+            <version>0.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
     </dependencies>
     

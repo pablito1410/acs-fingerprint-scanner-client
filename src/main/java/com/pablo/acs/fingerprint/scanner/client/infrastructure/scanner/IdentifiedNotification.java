@@ -1,11 +1,15 @@
 package com.pablo.acs.fingerprint.scanner.client.infrastructure.scanner;
 
-class IdentifiedNotification {
+class IdentifiedNotification extends Notification {
 
-    private final int id;
+    private String id;
 
-    IdentifiedNotification(final int id) {
+    private IdentifiedNotification() {
+        super();
+    }
 
+    IdentifiedNotification(final int notificationType, final String id) {
+        super(notificationType);
         this.id = id;
     }
 }

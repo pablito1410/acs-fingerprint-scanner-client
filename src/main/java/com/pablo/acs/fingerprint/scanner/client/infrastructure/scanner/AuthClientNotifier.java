@@ -1,8 +1,8 @@
 package com.pablo.acs.fingerprint.scanner.client.infrastructure.scanner;
 
 import com.pablo.acs.fingerprint.scanner.client.domain.ports.incoming.param.NotificationParams;
-import com.pablo.acs.fingerprint.scanner.client.domain.scanner.ports.outgoing.NotificationSender;
-import com.pablo.acs.fingerprint.scanner.client.infrastructure.rest.RestClient;
+import com.pablo.acs.fingerprint.scanner.client.domain.ports.outgoing.RestClient;
+import com.pablo.acs.fingerprint.scanner.client.domain.scanner.NotificationSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,18 +19,33 @@ public class AuthClientNotifier implements NotificationSender {
         this.notificationParams = Objects.requireNonNull(notificationParams);
     }
 
-    @Override
-    public void processingFinger() {
-        final ProcessingFingerNotification notification = NotificationFactory.processingFinger();
+    private void notify(final Notification notification) {
         notificationParams.getEndpoints().forEach(endpoint -> restClient.post(endpoint, notification));
         log.info("Notification was send");
     }
 
     @Override
+    public void processingFinger() {
+        final ProcessingFingerNotification notification = NotificationFactory.processingFinger();
+        notify(notification);
+    }
+
+    @Override
     public void identified(final int id) {
         final IdentifiedNotification notification = NotificationFactory.identified(id);
-        notificationParams.getEndpoints().forEach(endpoint -> restClient.post(endpoint, notification));
-        log.info("Notification was send");
+        notify(notification);
+    }
+
+    @Override
+    public void inputFinger(final int finger) {
+        final InputFingerNotification notification = NotificationFactory.inputFinger(finger);
+        notify(notification);
+    }
+
+    @Override
+    public void takeOffFinger() {
+        final Notification notification = NotificationFactory.takeOffFinger();
+        notify(notification);
     }
 
 }

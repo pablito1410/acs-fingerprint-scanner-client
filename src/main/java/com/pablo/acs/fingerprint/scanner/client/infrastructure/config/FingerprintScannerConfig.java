@@ -1,9 +1,9 @@
 package com.pablo.acs.fingerprint.scanner.client.infrastructure.config;
 
-import com.pablo.acs.fingerprint.scanner.client.domain.scanner.ports.incoming.FingerprintListener;
-import com.pablo.acs.fingerprint.scanner.client.domain.scanner.ports.incoming.FingerprintScannerApi;
+import com.pablo.acs.fingerprint.scanner.client.domain.export.ExportService;
+import com.pablo.acs.fingerprint.scanner.client.domain.scanner.NotificationSender;
+import com.pablo.acs.fingerprint.scanner.client.domain.scanner.ports.outgoing.FingerprintScannerApi;
 import com.pablo.acs.fingerprint.scanner.client.domain.scanner.FingerprintScannerService;
-import com.pablo.acs.fingerprint.scanner.client.domain.scanner.ports.outgoing.NotificationSender;
 import com.pablo.acs.fingerprint.scanner.client.infrastructure.scanner.FingerprintScannerListener;
 import com.pablo.acs.fingerprint.scanner.client.infrastructure.scanner.FingerprintScanner;
 import com.pablo.gt511c1r.GT511C1R;
@@ -25,12 +25,9 @@ public class FingerprintScannerConfig {
 
     @Bean
     public FingerprintScannerService fingerprintScannerService(final FingerprintScannerApi fingerprintScanner,
-                                                               final NotificationSender notificationSender) {
-        return new FingerprintScannerService(fingerprintScanner, notificationSender);
+                                                               final NotificationSender notificationSender,
+                                                               final ExportService exportService) {
+        return new FingerprintScannerService(fingerprintScanner, notificationSender, exportService);
     }
 
-    @Bean
-    public FingerprintListener fingerprintListener(final FingerprintScannerService fingerprintScannerService) {
-        return new FingerprintScannerListener(fingerprintScannerService);
-    }
 }

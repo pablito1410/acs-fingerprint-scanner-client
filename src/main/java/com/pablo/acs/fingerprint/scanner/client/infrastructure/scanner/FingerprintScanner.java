@@ -1,9 +1,12 @@
 package com.pablo.acs.fingerprint.scanner.client.infrastructure.scanner;
 
-import com.pablo.acs.fingerprint.scanner.client.domain.scanner.ports.incoming.FingerprintScannerApi;
 import com.pablo.acs.fingerprint.scanner.client.domain.scanner.IdentificationResult;
 import com.pablo.acs.fingerprint.scanner.client.domain.scanner.exception.FingerIsNotPressed;
+import com.pablo.acs.fingerprint.scanner.client.domain.scanner.exception.FingerprintScannerException;
+import com.pablo.acs.fingerprint.scanner.client.domain.scanner.exception.IdAlreadyExistException;
 import com.pablo.acs.fingerprint.scanner.client.domain.scanner.exception.IdentificationFailed;
+import com.pablo.acs.fingerprint.scanner.client.domain.scanner.ports.outgoing.FingerprintScannerApi;
+import com.pablo.gt511c1r.Error;
 import com.pablo.gt511c1r.GT511C1R;
 import com.pablo.gt511c1r.exception.CommandProcessingException;
 import org.slf4j.Logger;
@@ -59,5 +62,95 @@ public class FingerprintScanner implements FingerprintScannerApi {
     @Override
     public void setLED(final boolean value) {
         device.setLED(value);
+    }
+
+    @Override
+    public void enrollStart(final int id) {
+        try {
+            device.enrollStart(id);
+        } catch (CommandProcessingException e) {
+            // TODO przerobic commandprocessingexception na konkretne wyjątki w srodku
+            if (e.getError().isPresent() && e.getError().get() == Error.NACK_IS_ALREADY_USED) {
+                throw new IdAlreadyExistException(e);
+            }
+            throw new FingerprintScannerException(e);
+        }
+    }
+
+    @Override
+    public boolean enroll1() {
+        try {
+            return device.enroll1();
+        } catch (CommandProcessingException e) {
+            throw new FingerprintScannerException(e);
+        }
+    }
+
+    @Override
+    public boolean enroll2() {
+        try {
+            return device.enroll2();
+        } catch (CommandProcessingException e) {
+            throw new FingerprintScannerException(e);
+        }
+    }
+
+    @Override
+    public boolean enroll3() {
+        try {
+            return device.enroll3();
+        } catch (CommandProcessingException e) {
+            throw new FingerprintScannerException(e);
+        }
+    }
+
+    @Override
+    public boolean captureFinger() {
+        try {
+            return device.captureFinger(true);
+        } catch (CommandProcessingException e) {
+            throw new FingerprintScannerException(e);
+        }
+    }
+
+    @Override
+    public int getEnrollCount() {
+        return device.getEnrollCount();
+    }
+
+    @Override
+    public boolean checkEnrolled(final int id) {
+        try {
+            return device.checkEnrolled(id);
+        } catch (CommandProcessingException e) {
+            throw new FingerprintScannerException(e);
+        }
+    }
+
+    @Override
+    public byte[] getTemplate(final int id) {
+        try {
+            return device.getTemplate(id);
+        } catch (CommandProcessingException e) {
+            throw new FingerprintScannerException(e);
+        }
+    }
+
+    @Override
+    public void setTemplate(byte[] template, int id, boolean duplicateCheck) {
+        try {
+            device.setTemplate(template, id, duplicateCheck);
+        } catch (CommandProcessingException e) {
+            throw new FingerprintScannerException(e);
+        }
+    }
+
+    @Override
+    public void delete(final int id) {
+        try {
+            device.deleteId(id);
+        } catch (CommandProcessingException e) {
+            throw new FingerprintScannerException(e);
+        }
     }
 }
