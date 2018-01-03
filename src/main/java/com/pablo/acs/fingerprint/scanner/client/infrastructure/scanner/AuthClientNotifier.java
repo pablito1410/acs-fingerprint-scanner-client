@@ -1,6 +1,6 @@
 package com.pablo.acs.fingerprint.scanner.client.infrastructure.scanner;
 
-import com.pablo.acs.fingerprint.scanner.client.domain.ports.incoming.param.NotificationParams;
+import com.pablo.acs.fingerprint.scanner.client.domain.export.ports.incoming.SystemProfile;
 import com.pablo.acs.fingerprint.scanner.client.domain.ports.outgoing.RestClient;
 import com.pablo.acs.fingerprint.scanner.client.domain.scanner.NotificationSender;
 import org.slf4j.Logger;
@@ -10,18 +10,18 @@ import java.util.Objects;
 
 public class AuthClientNotifier implements NotificationSender {
 
-    private static final Logger log = LoggerFactory.getLogger(AuthClientNotifier.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthClientNotifier.class);
     private final RestClient restClient;
-    private final NotificationParams notificationParams;
+    private final SystemProfile systemProfile;
 
-    public AuthClientNotifier(final RestClient restClient, final NotificationParams notificationParams) {
+    public AuthClientNotifier(final RestClient restClient, final SystemProfile systemProfile) {
         this.restClient = Objects.requireNonNull(restClient);
-        this.notificationParams = Objects.requireNonNull(notificationParams);
+        this.systemProfile = Objects.requireNonNull(systemProfile);
     }
 
     private void notify(final Notification notification) {
-        notificationParams.getEndpoints().forEach(endpoint -> restClient.post(endpoint, notification));
-        log.info("Notification was send");
+        systemProfile.getNotificationEndpoints().forEach(endpoint -> restClient.post(endpoint, notification));
+        LOGGER.info("Notification was send");
     }
 
     @Override

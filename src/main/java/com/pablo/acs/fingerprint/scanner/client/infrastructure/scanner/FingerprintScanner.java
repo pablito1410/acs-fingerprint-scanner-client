@@ -25,13 +25,13 @@ public class FingerprintScanner implements FingerprintScannerApi {
     }
 
     @Override
-    public boolean fingerIsPressed() {
+    public boolean isFingerPressed() {
         return device.isPressFinger();
     }
 
     @Override
     public IdentificationResult identify() throws FingerIsNotPressed, IdentificationFailed {
-        if (!fingerIsPressed()) {
+        if (!isFingerPressed()) {
             throw new FingerIsNotPressed();
         }
 

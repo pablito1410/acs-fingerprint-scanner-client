@@ -35,7 +35,7 @@ public class FingerprintScannerServiceTest {
 
     @Before
     public void setUp() throws Exception, FingerIsNotPressed, IdentificationFailed {
-        Mockito.when(fingerprintScannerApi.fingerIsPressed()).thenReturn(Boolean.TRUE);
+        Mockito.when(fingerprintScannerApi.isFingerPressed()).thenReturn(Boolean.TRUE);
         Mockito
                 .when(fingerprintScannerApi.identify())
                 .thenReturn(IdentificationResult.success(1));

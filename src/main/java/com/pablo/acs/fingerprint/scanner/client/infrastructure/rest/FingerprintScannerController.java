@@ -17,12 +17,14 @@ public class FingerprintScannerController {
         this.fingerprintScannerService = fingerprintScannerService;
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(path = "/enroll", method = RequestMethod.POST)
     public ResponseEntity enroll(@RequestBody final EnrollCommand command) {
         fingerprintScannerService.handle(command);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @RequestMapping(path = "/template", method = RequestMethod.GET)
     public ResponseEntity<String> template(@RequestParam("id") final int id) {
         final String template = fingerprintScannerService.getTemplate(new GetTemplate(id));

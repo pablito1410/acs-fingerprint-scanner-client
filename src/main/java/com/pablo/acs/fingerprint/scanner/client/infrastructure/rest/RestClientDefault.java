@@ -18,11 +18,12 @@ import java.util.Map;
 public class RestClientDefault implements RestClient {
 
     private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper = new ObjectMapper(); // TODO wstrzyknac
+    private final ObjectMapper objectMapper;
 
-    public RestClientDefault(final RestTemplate restTemplate) {
+    public RestClientDefault(final RestTemplate restTemplate, final ObjectMapper objectMapper) {
         this.restTemplate = restTemplate;
-        objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        this.objectMapper = objectMapper;
+        this.objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
     }
 
     @Override
@@ -74,5 +75,4 @@ public class RestClientDefault implements RestClient {
             }
         };
     }
-
 }

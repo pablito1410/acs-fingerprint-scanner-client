@@ -25,9 +25,7 @@ class UpdateScheduler {
     void updateDatabase() {
         LOGGER.info("Update database start on " + LocalDateTime.now());
         updateService.handle(
-                new UpdateDatabase(
-                        null,
-                        "http://localhost:7000/update?identificationMethod=FINGERPRINT_SCANNER&lastUpdate=%s"));
+                new UpdateDatabase());
         LOGGER.info("Update database finished on " + LocalDateTime.now());
     }
 }

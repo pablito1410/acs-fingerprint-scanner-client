@@ -1,13 +1,17 @@
 package com.pablo.acs.fingerprint.scanner.client.infrastructure.profile;
 
-import com.pablo.acs.fingerprint.scanner.client.domain.ports.incoming.param.NotificationParams;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class NotificationProfile implements NotificationParams {
+@Configuration
+@PropertySource("classpath:application.properties")
+@ConfigurationProperties(prefix = "notifications.endpoints")
+public class NotificationProfile {
 
-    @Override
     public Collection<String> getEndpoints() {
         final Collection<String> endpoints = new ArrayList<>();
         endpoints.add("http://localhost:5000/");

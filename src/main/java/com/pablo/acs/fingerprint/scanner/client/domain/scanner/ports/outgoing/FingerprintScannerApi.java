@@ -6,7 +6,7 @@ import com.pablo.acs.fingerprint.scanner.client.domain.scanner.exception.Identif
 
 public interface FingerprintScannerApi {
 
-    boolean fingerIsPressed();
+    boolean isFingerPressed();
 
     IdentificationResult identify() throws FingerIsNotPressed, IdentificationFailed;
 

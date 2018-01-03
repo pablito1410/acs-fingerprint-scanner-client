@@ -1,5 +1,6 @@
 package com.pablo.acs.fingerprint.scanner.client.domain.update;
 
+import com.pablo.acs.fingerprint.scanner.client.domain.export.ports.incoming.SystemProfile;
 import com.pablo.acs.fingerprint.scanner.client.domain.ports.incoming.param.Response;
 import com.pablo.acs.fingerprint.scanner.client.domain.ports.outgoing.RestClient;
 import com.pablo.acs.fingerprint.scanner.client.domain.scanner.FingerprintScannerService;
@@ -21,18 +22,21 @@ public class UpdateService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UpdateService.class);
     private final RestClient restClient;
     private final FingerprintScannerService fingerprintScannerService;
+    private final SystemProfile systemProfile;
 
     public UpdateService(final RestClient restClient,
-                         final FingerprintScannerService fingerprintScannerService) {
+                         final FingerprintScannerService fingerprintScannerService,
+                         final SystemProfile systemProfile) {
         this.restClient = restClient;
         this.fingerprintScannerService = fingerprintScannerService;
+        this.systemProfile = systemProfile;
     }
 
     public void handle(final UpdateDatabase command) {
         LOGGER.info("Database update process started.");
 
         Map<Long, byte[]> templates = downloadNewTemplates(
-                String.format(command.getUpdateUrl(), UpdateContext.LAST_UPDATE))
+                String.format(systemProfile.getUpdateUrl(), UpdateContext.LAST_UPDATE))
                     .stream()
                     .collect(Collectors.toMap(
                             FingerprintTemplate::getUserId, FingerprintTemplate::getIdentifier));
@@ -68,6 +72,5 @@ public class UpdateService {
             LOGGER.warn("Auth service returned HttpStatus=" + response.getStatusCode());
             throw new AuthenticationServiceConnectionError("HttpStatus=" + response.getStatusCode());
         }
-
     }
 }

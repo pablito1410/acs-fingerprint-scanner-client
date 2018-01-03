@@ -4,11 +4,11 @@ import com.pablo.acs.fingerprint.scanner.client.domain.command.Command;
 
 public class EnrollCommand implements Command {
 
-    private int userId;
+    private Integer userId;
 
     private EnrollCommand() { }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
