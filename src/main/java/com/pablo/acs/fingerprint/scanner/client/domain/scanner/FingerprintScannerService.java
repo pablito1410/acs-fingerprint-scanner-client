@@ -63,12 +63,7 @@ public class FingerprintScannerService {
 
     public boolean isFingerPressed() {
         synchronized (LOCK) {
-//            try {
                 return fingerprintScanner.isFingerPressed();
-//            } catch (final SerialPortIsNotOpenedException e) {
-//                LOGGER.warn("Serial port is not opened. Check module connection.");
-//                return false;
-//            }
         }
     }
 
